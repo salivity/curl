@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Append Data to a URL Using cURL - curl</title>
+    <meta name="description" content="This article explains how to append data to a URL using the curl command-line tool. You will learn how to pass data as query parameters for GET requests, how to format data automatically using built-in curl flags, and how to properly handle URL encoding">
+    <link rel="canonical" href="https://salivity.github.io/curl/article/how-to-append-data-to-a-url-using-curl">
+    <link rel="icon" href="/curl/favicon.ico">
+    <link rel="stylesheet" href="/curl/css/style.css">
+    <script src="/curl/js/fuse.min.js"></script>
+    <script src="/curl/js/script.js" defer></script>
+    <script id="MathJax-script" src="/curl/js/mathjax.min.js" async></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Append Data to a URL Using cURL - curl" />
+    <meta property="og:url" content="https://salivity.github.io/curl/article/how-to-append-data-to-a-url-using-curl" />
+    <meta property="og:image:url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how to append data to a URL using the curl command-line tool. You will learn how to pass data as query parameters for GET requests, how to format data automatically using built-in curl flags, and how to properly handle URL encoding" />
+    <link rel="manifest" href="/curl/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/curl/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>curl</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/curl/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-append-data-to-a-url-using-curl">How to Append Data to a
+URL Using cURL</h1>
+<p>This article explains how to append data to a URL using the
+<code>curl</code> command-line tool. You will learn how to pass data as
+query parameters for GET requests, how to format data automatically
+using built-in <code>curl</code> flags, and how to properly handle URL
+encoding for special characters.</p>
+<h2 id="manually-appending-data-to-the-url-get-requests">1. Manually
+Appending Data to the URL (GET Requests)</h2>
+<p>The most straightforward way to append data to a URL is to manually
+construct a query string and attach it to the end of the URL using a
+question mark (<code>?</code>) followed by key-value pairs separated by
+ampersands (<code>&amp;</code>).</p>
+<p>When using this method in your terminal, always wrap the URL in
+quotes to prevent the shell from interpreting the ampersand
+(<code>&amp;</code>) as a background process command.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">&quot;https://api.example.com/search?query=laptop&amp;limit=10&quot;</span></span></code></pre></div>
+<h2 id="automatically-appending-data-with---get-and---data">2.
+Automatically Appending Data with <code>--get</code> and
+<code>--data</code></h2>
+<p>Instead of manually constructing long URL strings, you can use
+<code>curl</code> to append the data for you. By combining the
+<code>--get</code> (or <code>-G</code>) option with the
+<code>--data</code> (or <code>-d</code>) option, <code>curl</code> will
+take the specified data key-value pairs and automatically append them to
+the end of the URL with the correct <code>?</code> and
+<code>&amp;</code> separators.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-G</span> <span class="at">--data</span> <span class="st">&quot;query=laptop&quot;</span> <span class="at">--data</span> <span class="st">&quot;limit=10&quot;</span> https://api.example.com/search</span></code></pre></div>
+<p>This command sends a GET request to
+<code>https://api.example.com/search?query=laptop&amp;limit=10</code>.</p>
+<h2 id="handling-special-characters-with---data-urlencode">3. Handling
+Special Characters with <code>--data-urlencode</code></h2>
+<p>If your data contains spaces, symbols, or special characters, sending
+them raw in a URL can cause errors. You can use the
+<code>--data-urlencode</code> option to force <code>curl</code> to
+format and encode the data properly before appending it to the URL.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-G</span> <span class="at">--data-urlencode</span> <span class="st">&quot;user=John Doe&quot;</span> <span class="at">--data-urlencode</span> <span class="st">&quot;status=active&amp;ready&quot;</span> https://api.example.com/users</span></code></pre></div>
+<p>In this example, the space in “John Doe” is converted to
+<code>%20</code> (or <code>+</code>), and the <code>&amp;</code> in the
+status is safely encoded so it is not mistaken for a parameter
+separator.</p>
+<h2 id="appending-data-in-post-requests">4. Appending Data in POST
+Requests</h2>
+<p>If you need to send data to a URL using a POST request instead of a
+GET request, do not use the <code>-G</code> flag. By default, using the
+<code>-d</code> or <code>--data</code> flag will send the data inside
+the request body rather than appending it to the URL.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-d</span> <span class="st">&quot;username=john&quot;</span> <span class="at">-d</span> <span class="st">&quot;password=secret&quot;</span> https://api.example.com/login</span></code></pre></div></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/curl'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'light' ? 'github-light' : 'github-dark'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/curl/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/curl/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

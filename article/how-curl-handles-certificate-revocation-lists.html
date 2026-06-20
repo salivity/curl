@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How curl Handles Certificate Revocation Lists - curl</title>
+    <meta name="description" content="This article explains how the curl command-line tool handles Certificate Revocation Lists (CRLs) to verify the validity of SSL/TLS certificates. While curl does not automatically download CRLs during a handshake, it possesses native support for enforcing">
+    <link rel="canonical" href="https://salivity.github.io/curl/article/how-curl-handles-certificate-revocation-lists">
+    <link rel="icon" href="/curl/favicon.ico">
+    <link rel="stylesheet" href="/curl/css/style.css">
+    <script src="/curl/js/fuse.min.js"></script>
+    <script src="/curl/js/script.js" defer></script>
+    <script id="MathJax-script" src="/curl/js/mathjax.min.js" async></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How curl Handles Certificate Revocation Lists - curl" />
+    <meta property="og:url" content="https://salivity.github.io/curl/article/how-curl-handles-certificate-revocation-lists" />
+    <meta property="og:image:url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the curl command-line tool handles Certificate Revocation Lists (CRLs) to verify the validity of SSL/TLS certificates. While curl does not automatically download CRLs during a handshake, it possesses native support for enforcing" />
+    <link rel="manifest" href="/curl/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/curl/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>curl</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/curl/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-curl-handles-certificate-revocation-lists">How curl Handles
+Certificate Revocation Lists</h1>
+<p>This article explains how the <code>curl</code> command-line tool
+handles Certificate Revocation Lists (CRLs) to verify the validity of
+SSL/TLS certificates. While <code>curl</code> does not automatically
+download CRLs during a handshake, it possesses native support for
+enforcing revocation checks when provided with a local CRL file, relying
+on its underlying SSL/TLS library to perform the validation.</p>
+<h2 id="default-curl-behavior">Default curl Behavior</h2>
+<p>By default, <code>curl</code> performs standard SSL/TLS verification.
+It checks if the server’s certificate is expired, matches the requested
+hostname, and is signed by a trusted Certificate Authority (CA) found in
+the local CA bundle.</p>
+<p>However, <code>curl</code> does not automatically fetch or check CRLs
+or use Online Certificate Status Protocol (OCSP) queries by default. If
+a certificate has been revoked by a CA before its natural expiration
+date, <code>curl</code> will still trust it unless explicitly instructed
+to perform a revocation check.</p>
+<h2 id="native-crl-verification-using---crlfile">Native CRL Verification
+using <code>--crlfile</code></h2>
+<p>To enforce CRL verification, <code>curl</code> provides a native
+command-line option: <code>--crlfile</code>.</p>
+<p>When you use this option, you must manually provide a path to a
+PEM-formatted CRL file. <code>curl</code> passes this file directly to
+the underlying SSL/TLS backend (such as OpenSSL, GnuTLS, or mbedTLS) to
+validate the target server’s certificate.</p>
+<h3 id="command-syntax">Command Syntax</h3>
+<p>To check a server’s certificate against a local CRL file, use the
+following syntax:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--crlfile</span> /path/to/revoked_certs.crl https://example.com</span></code></pre></div>
+<h3 id="how-the-verification-process-works">How the Verification Process
+Works</h3>
+<ol type="1">
+<li><strong>CRL Loading:</strong> <code>curl</code> reads the local CRL
+file specified by the user.</li>
+<li><strong>Handshake Initiation:</strong> <code>curl</code> initiates
+the TLS handshake with the destination server.</li>
+<li><strong>Serial Number Comparison:</strong> The underlying TLS
+library extracts the serial number from the server’s certificate (and
+intermediate certificates, if applicable).</li>
+<li><strong>Revocation Check:</strong> The library compares these serial
+numbers against the revoked serial numbers listed inside the
+PEM-formatted CRL file.</li>
+<li><strong>Connection Verdict:</strong>
+<ul>
+<li>If the certificate’s serial number is <strong>not</strong> in the
+CRL, the connection succeeds.</li>
+<li>If the certificate’s serial number <strong>is</strong> listed in the
+CRL, the TLS handshake fails immediately.</li>
+</ul></li>
+</ol>
+<h2 id="handling-verification-failures">Handling Verification
+Failures</h2>
+<p>If <code>curl</code> detects a revoked certificate using the provided
+CRL file, it terminates the connection and returns a specific exit code
+to ensure security:</p>
+<ul>
+<li><strong>Error Message:</strong>
+<code>curl: (60) SSL certificate problem: CA certificate is invalid or not trusted</code>
+(or a similar TLS-backend-specific revocation error).</li>
+<li><strong>Exit Code:</strong> <code>60</code>
+(CURLE_PEER_FAILED_VERIFICATION), indicating that the peer’s certificate
+could not be verified.</li>
+</ul>
+<h2 id="important-limitations">Important Limitations</h2>
+<p>When using <code>curl</code> with CRLs, keep the following native
+limitations in mind:</p>
+<ul>
+<li><p><strong>No Automatic Updates:</strong> <code>curl</code> cannot
+download or update the CRL file automatically from the CA’s CRL
+Distribution Point (CDP). System administrators must write custom
+scripts (e.g., using <code>wget</code> or <code>curl</code> itself) to
+regularly fetch updated CRLs from the CA and save them locally.</p></li>
+<li><p><strong>PEM Format Requirement:</strong> The CRL file supplied to
+<code>--crlfile</code> must be in PEM format. If the CA provides the CRL
+in DER format, it must be converted using a tool like OpenSSL before
+<code>curl</code> can use it:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> crl <span class="at">-inform</span> DER <span class="at">-in</span> input.crl <span class="at">-outform</span> PEM <span class="at">-out</span> revoked_certs.crl</span></code></pre></div></li>
+<li><p><strong>TLS Backend Dependency:</strong> The exact behavior of
+the CRL check can vary slightly depending on the SSL/TLS library
+<code>curl</code> was compiled with (e.g., OpenSSL vs. Secure Transport
+on macOS).</p></li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/curl'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'light' ? 'github-light' : 'github-dark'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/curl/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/curl/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

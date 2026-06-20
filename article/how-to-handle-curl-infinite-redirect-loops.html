@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Handle Curl Infinite Redirect Loops - curl</title>
+    <meta name="description" content="When using curl to fetch web resources, encountering an infinite redirect loop can halt automation scripts, waste bandwidth, and cause requests to fail. This article explains what happens when curl gets stuck in a redirect loop, how the tool inherently p">
+    <link rel="canonical" href="https://salivity.github.io/curl/article/how-to-handle-curl-infinite-redirect-loops">
+    <link rel="icon" href="/curl/favicon.ico">
+    <link rel="stylesheet" href="/curl/css/style.css">
+    <script src="/curl/js/fuse.min.js"></script>
+    <script src="/curl/js/script.js" defer></script>
+    <script id="MathJax-script" src="/curl/js/mathjax.min.js" async></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Handle Curl Infinite Redirect Loops - curl" />
+    <meta property="og:url" content="https://salivity.github.io/curl/article/how-to-handle-curl-infinite-redirect-loops" />
+    <meta property="og:image:url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When using curl to fetch web resources, encountering an infinite redirect loop can halt automation scripts, waste bandwidth, and cause requests to fail. This article explains what happens when curl gets stuck in a redirect loop, how the tool inherently p" />
+    <link rel="manifest" href="/curl/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/curl/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>curl</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/curl/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-handle-curl-infinite-redirect-loops">How to Handle Curl
+Infinite Redirect Loops</h1>
+<p>When using <code>curl</code> to fetch web resources, encountering an
+infinite redirect loop can halt automation scripts, waste bandwidth, and
+cause requests to fail. This article explains what happens when
+<code>curl</code> gets stuck in a redirect loop, how the tool inherently
+prevents infinite looping, and the specific command-line options you can
+use to mitigate and debug this behavior effectively.</p>
+<h2 id="what-happens-during-a-redirect-loop">What Happens During a
+Redirect Loop?</h2>
+<p>By default, <code>curl</code> does not follow HTTP redirects (status
+codes in the 3xx range) and will simply return the redirect response.
+However, if you instruct <code>curl</code> to follow redirects using the
+<code>-L</code> or <code>--location</code> flag, it will automatically
+make a new request to the URL specified in the response’s
+<code>Location</code> header.</p>
+<p>If those target URLs point back to each other in a loop—for example,
+Page A redirects to Page B, which redirects back to Page
+A—<code>curl</code> would theoretically request these pages forever.
+This behavior can freeze automated scripts and spike traffic on the
+target servers.</p>
+<h2 id="built-in-mitigation-the-redirection-limit">Built-In Mitigation:
+The Redirection Limit</h2>
+<p>To prevent infinite loops from hanging your system, <code>curl</code>
+has a built-in safety mechanism.</p>
+<p>When redirect following is enabled via <code>-L</code>,
+<code>curl</code> limits the number of sequential redirects it will
+follow. By default, this limit is set to 50. If the redirect chain
+exceeds 50 hops, <code>curl</code> aborts the operation and exits with
+an error:</p>
+<pre class="text"><code>curl: (47) Maximum redirection length exceeded</code></pre>
+<p>This prevents the command from running indefinitely, but waiting for
+50 redirects can still cause unnecessary delay in scripts and
+applications.</p>
+<h2 id="how-to-customize-and-mitigate-redirect-loops">How to Customize
+and Mitigate Redirect Loops</h2>
+<h3 id="reduce-the-redirect-limit-with---max-redirs">1. Reduce the
+Redirect Limit with <code>--max-redirs</code></h3>
+<p>You can lower the maximum allowed redirects to detect loops faster.
+Using the <code>--max-redirs</code> option alongside <code>-L</code>
+allows you to define a strict threshold. For example, to stop following
+redirects after 5 attempts:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">--max-redirs</span> 5 https://example.com</span></code></pre></div>
+<p>If the server redirects more than 5 times, <code>curl</code> will
+immediately exit with error code 47, saving time and network
+resources.</p>
+<h3 id="inspect-the-redirect-chain">2. Inspect the Redirect Chain</h3>
+<p>If you suspect a loop is occurring, you can diagnose the redirect
+path by viewing the HTTP headers. Use the <code>-I</code> (fetch headers
+only) and <code>-L</code> flags together to see where each redirect
+points:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-IL</span> https://example.com</span></code></pre></div>
+<p>This command will print the headers for every hop in the chain,
+allowing you to identify which URL is redirecting back to a previous
+page.</p>
+<h3 id="use-verbose-mode-for-detailed-troubleshooting">3. Use Verbose
+Mode for Detailed Troubleshooting</h3>
+<p>For a comprehensive view of the request and response cycles, add the
+<code>-v</code> or <code>--verbose</code> flag. This shows the DNS
+lookups, TLS handshakes, and redirect behaviors in real-time:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-Lv</span> https://example.com</span></code></pre></div>
+<h3 id="common-causes-of-redirect-loops">Common Causes of Redirect
+Loops</h3>
+<p>If you are the administrator of the server causing the loop, the
+issue is typically caused by: * <strong>HTTP to HTTPS loops:</strong>
+The server redirects HTTP to HTTPS, but the SSL/TLS configuration on the
+server or reverse proxy incorrectly forwards the request back to port 80
+(HTTP). * <strong>WWW vs. non-WWW conflicts:</strong> The server
+redirects <code>example.com</code> to <code>www.example.com</code>,
+while another rule simultaneously redirects <code>www.example.com</code>
+back to <code>example.com</code>. * <strong>Trailing slash
+issues:</strong> Misconfigured routing rules that constantly add or
+remove trailing slashes from the URL path.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/curl'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'light' ? 'github-light' : 'github-dark'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/curl/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/curl/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

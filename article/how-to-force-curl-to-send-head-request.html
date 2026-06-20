@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Force Curl to Send HEAD Request - curl</title>
+    <meta name="description" content="This article explains how to use the curl command-line tool to send an HTTP HEAD request to retrieve only the response headers from a web server. You will learn the primary commands to fetch headers, the difference between the available options, and how">
+    <link rel="canonical" href="https://salivity.github.io/curl/article/how-to-force-curl-to-send-head-request">
+    <link rel="icon" href="/curl/favicon.ico">
+    <link rel="stylesheet" href="/curl/css/style.css">
+    <script src="/curl/js/fuse.min.js"></script>
+    <script src="/curl/js/script.js" defer></script>
+    <script id="MathJax-script" src="/curl/js/mathjax.min.js" async></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Force Curl to Send HEAD Request - curl" />
+    <meta property="og:url" content="https://salivity.github.io/curl/article/how-to-force-curl-to-send-head-request" />
+    <meta property="og:image:url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how to use the curl command-line tool to send an HTTP HEAD request to retrieve only the response headers from a web server. You will learn the primary commands to fetch headers, the difference between the available options, and how" />
+    <link rel="manifest" href="/curl/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/curl/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>curl</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/curl/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-force-curl-to-send-head-request">How to Force Curl to
+Send HEAD Request</h1>
+<p>This article explains how to use the <code>curl</code> command-line
+tool to send an HTTP HEAD request to retrieve only the response headers
+from a web server. You will learn the primary commands to fetch headers,
+the difference between the available options, and how to combine flags
+for advanced use cases like following redirects or silencing the
+output.</p>
+<h2 id="the-standard-method-use-the--i-option">The Standard Method: Use
+the <code>-I</code> Option</h2>
+<p>The most efficient and common way to send a HEAD request with
+<code>curl</code> is by using the <code>-I</code> (or
+<code>--head</code>) option. This flag tells <code>curl</code> to fetch
+the headers only and immediately terminate the connection without
+downloading the response body.</p>
+<p>To use this method, run the following command in your terminal:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-I</span> https://example.com</span></code></pre></div>
+<h3 id="how-it-works">How It Works:</h3>
+<ul>
+<li><strong><code>-I</code> / <code>--head</code></strong>: This option
+automatically switches the request method to <code>HEAD</code>. It also
+configures <code>curl</code> to display the response headers in the
+terminal output and ignore the body.</li>
+</ul>
+<hr />
+<h2 id="the-alternative-method-use--x-head">The Alternative Method: Use
+<code>-X HEAD</code></h2>
+<p>Another way to send a HEAD request is by explicitly defining the
+request method using the <code>-X</code> (or <code>--request</code>)
+option.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> HEAD https://example.com</span></code></pre></div>
+<h3 id="why--i-is-preferred-over--x-head">Why <code>-I</code> is
+Preferred Over <code>-X HEAD</code>:</h3>
+<p>While <code>curl -X HEAD</code> changes the HTTP method to HEAD, it
+does not automatically tell <code>curl</code> to only output headers. In
+some configurations, <code>curl</code> might sit waiting for a response
+body that will never arrive because a HEAD request tells the server not
+to send one. Therefore, using the <code>-I</code> flag is the safer and
+standard approach for retrieving headers.</p>
+<hr />
+<h2 id="useful-command-variations">Useful Command Variations</h2>
+<p>You can combine the <code>-I</code> flag with other <code>curl</code>
+options to customize your output.</p>
+<h3 id="follow-redirects--l">1. Follow Redirects (<code>-L</code>)</h3>
+<p>If the URL you are requesting redirects to another page,
+<code>curl</code> will only show the headers for the initial redirect by
+default. To follow the redirects and see the headers of the final
+destination, add the <code>-L</code> flag:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-IL</span> https://example.com</span></code></pre></div>
+<h3 id="silent-mode--s">2. Silent Mode (<code>-s</code>)</h3>
+<p>By default, <code>curl</code> may display a progress meter. To hide
+the progress meter and only output the HTTP headers, combine
+<code>-I</code> with the silent <code>-s</code> flag:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-Is</span> https://example.com</span></code></pre></div></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/curl'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'light' ? 'github-light' : 'github-dark'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/curl/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/curl/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

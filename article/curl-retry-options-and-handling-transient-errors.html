@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curl Retry Options and Handling Transient Errors - curl</title>
+    <meta name="description" content="When transferring data over a network using curl, temporary network glitches, rate limits, or brief server outages can cause requests to fail. This article explains how to use curl's built-in retry options to automatically reattempt failed requests, deta">
+    <link rel="canonical" href="https://salivity.github.io/curl/article/curl-retry-options-and-handling-transient-errors">
+    <link rel="icon" href="/curl/favicon.ico">
+    <link rel="stylesheet" href="/curl/css/style.css">
+    <script src="/curl/js/fuse.min.js"></script>
+    <script src="/curl/js/script.js" defer></script>
+    <script id="MathJax-script" src="/curl/js/mathjax.min.js" async></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Curl Retry Options and Handling Transient Errors - curl" />
+    <meta property="og:url" content="https://salivity.github.io/curl/article/curl-retry-options-and-handling-transient-errors" />
+    <meta property="og:image:url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When transferring data over a network using curl, temporary network glitches, rate limits, or brief server outages can cause requests to fail. This article explains how to use curl's built-in retry options to automatically reattempt failed requests, deta" />
+    <link rel="manifest" href="/curl/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/curl/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>curl</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/curl/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="curl-retry-options-and-handling-transient-errors">Curl Retry
+Options and Handling Transient Errors</h1>
+<p>When transferring data over a network using curl, temporary network
+glitches, rate limits, or brief server outages can cause requests to
+fail. This article explains how to use curl’s built-in retry options to
+automatically reattempt failed requests, details how curl defines and
+handles transient errors, and provides practical examples of the
+command-line flags you can use to make your scripts more resilient.</p>
+<h2 id="understanding-curls-retry-mechanism">Understanding Curl’s Retry
+Mechanism</h2>
+<p>The primary option for retrying failed requests in curl is the
+<code>--retry &lt;num&gt;</code> flag. When you specify this option
+followed by a number, curl will attempt to re-send the request up to
+that many times if it encounters what it considers a “transient”
+error.</p>
+<p>By default, curl does not retry indefinitely or on every type of
+failure. It uses an exponential backoff algorithm between attempts. It
+starts by waiting one second before the first retry, then doubles the
+wait time for each subsequent attempt (2 seconds, 4 seconds, 8 seconds,
+and so on) up to a maximum limit of 10 seconds per interval.</p>
+<h2 id="what-curl-considers-a-transient-error">What Curl Considers a
+Transient Error</h2>
+<p>Curl is selective about which failures warrant a retry. It will only
+trigger a retry if it detects a transient (temporary) error, which
+includes:</p>
+<ul>
+<li><strong>HTTP Server Errors:</strong> Specific HTTP response codes,
+namely <code>500</code> (Internal Server Error), <code>502</code> (Bad
+Gateway), <code>503</code> (Service Unavailable), and <code>504</code>
+(Gateway Timeout).</li>
+<li><strong>Transient Network Failures:</strong> Internal curl transfer
+errors, such as a lost connection during transmission or a timeout while
+waiting for a response.</li>
+</ul>
+<p>By default, curl will <strong>not</strong> retry on client-side
+errors (like HTTP <code>404</code> Not Found or <code>403</code>
+Forbidden) because these are permanent errors that a retry will not
+resolve. It also does not retry on a “Connection Refused” error by
+default, as this usually indicates the target server is down or the port
+is closed.</p>
+<h2 id="key-curl-retry-flags">Key Curl Retry Flags</h2>
+<p>To customize how curl handles retries, you can combine the standard
+retry flag with several modifier options:</p>
+<h3 id="retry-number">1. <code>--retry &lt;number&gt;</code></h3>
+<p>This defines the maximum number of retry attempts.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--retry</span> 5 https://example.com/api</span></code></pre></div>
+<h3 id="retry-delay-seconds">2.
+<code>--retry-delay &lt;seconds&gt;</code></h3>
+<p>If you want to disable the default exponential backoff and enforce a
+strict, consistent wait time between attempts, use this flag.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--retry</span> 3 <span class="at">--retry-delay</span> 5 https://example.com/api</span></code></pre></div>
+<p><em>This command waits exactly 5 seconds between each of the 3 retry
+attempts.</em></p>
+<h3 id="retry-max-time-seconds">3.
+<code>--retry-max-time &lt;seconds&gt;</code></h3>
+<p>This limits the total time allowed for all retry attempts combined.
+If the cumulative retry time exceeds this limit, curl will stop
+retrying, even if it has not reached the maximum retry count.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--retry</span> 10 <span class="at">--retry-max-time</span> 30 https://example.com/api</span></code></pre></div>
+<h3 id="retry-connrefused">4. <code>--retry-connrefused</code></h3>
+<p>By default, curl considers a refused connection to be a hard failure.
+Adding this flag tells curl to treat a connection refusal as a transient
+error, making it highly useful when waiting for a local service or
+container to boot up.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--retry</span> 5 <span class="at">--retry-connrefused</span> https://localhost:8080</span></code></pre></div>
+<h3 id="handling-http-429-too-many-requests">5. Handling HTTP 429 (Too
+Many Requests)</h3>
+<p>While curl does not automatically retry standard 4xx client errors,
+some servers send a <code>Retry-After</code> header with a
+<code>429</code> (Too Many Requests) response. To respect this header
+and retry accordingly, you must combine <code>--retry</code> with the
+<code>--fail</code> (or <code>-f</code>) flag. The <code>--fail</code>
+flag forces curl to treat HTTP errors as document failures, allowing the
+retry logic to take effect.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/curl'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'light' ? 'github-light' : 'github-dark'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/curl/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/curl/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

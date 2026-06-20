@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to URL Encode POST Data Automatically with cURL - curl</title>
+    <meta name="description" content="Sending POST requests with URL-encoded data is a common task when interacting with web APIs. This article explains how to use the curl command-line tool to automatically URL-encode your POST payload using the --data-urlencode flag, ensuring your data is">
+    <link rel="canonical" href="https://salivity.github.io/curl/article/how-to-url-encode-post-data-automatically-with-curl">
+    <link rel="icon" href="/curl/favicon.ico">
+    <link rel="stylesheet" href="/curl/css/style.css">
+    <script src="/curl/js/fuse.min.js"></script>
+    <script src="/curl/js/script.js" defer></script>
+    <script id="MathJax-script" src="/curl/js/mathjax.min.js" async></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to URL Encode POST Data Automatically with cURL - curl" />
+    <meta property="og:url" content="https://salivity.github.io/curl/article/how-to-url-encode-post-data-automatically-with-curl" />
+    <meta property="og:image:url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/curl/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Sending POST requests with URL-encoded data is a common task when interacting with web APIs. This article explains how to use the curl command-line tool to automatically URL-encode your POST payload using the --data-urlencode flag, ensuring your data is" />
+    <link rel="manifest" href="/curl/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/curl/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>curl</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/curl/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-url-encode-post-data-automatically-with-curl">How to URL
+Encode POST Data Automatically with cURL</h1>
+<p>Sending POST requests with URL-encoded data is a common task when
+interacting with web APIs. This article explains how to use the
+<code>curl</code> command-line tool to automatically URL-encode your
+POST payload using the <code>--data-urlencode</code> flag, ensuring your
+data is formatted correctly without the need for manual conversion.</p>
+<p>When sending data using the standard <code>-d</code> or
+<code>--data</code> flags, <code>curl</code> expects the data to already
+be URL-encoded. If your data contains spaces, ampersands, or other
+special characters, sending it raw will break the request.</p>
+<p>To solve this, <code>curl</code> provides the
+<code>--data-urlencode</code> option, which automatically handles the
+encoding process for you.</p>
+<h3 id="basic-syntax-for-key-value-pairs">Basic Syntax for Key-Value
+Pairs</h3>
+<p>To URL-encode a simple key-value pair, use the
+<code>--data-urlencode</code> flag followed by
+<code>key=value</code>.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--data-urlencode</span> <span class="st">&quot;name=John Doe&quot;</span> <span class="at">--data-urlencode</span> <span class="st">&quot;status=active &amp; happy&quot;</span> https://httpbin.org/post</span></code></pre></div>
+<p>In this example, <code>curl</code> automatically converts the space
+in “John Doe” to <code>%20</code> (or <code>+</code>) and the ampersand
+in “active &amp; happy” to <code>%26</code>, preventing the server from
+misinterpreting the query parameters.</p>
+<h3 id="different-formats-of---data-urlencode">Different Formats of
+<code>--data-urlencode</code></h3>
+<p>The <code>--data-urlencode</code> flag is highly versatile and
+supports several input formats depending on how you structure your
+data:</p>
+<ol type="1">
+<li><p><strong><code>content</code> (Value only)</strong>: URL-encodes
+the entire string.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--data-urlencode</span> <span class="st">&quot;pure data to encode&quot;</span> https://httpbin.org/post</span></code></pre></div></li>
+<li><p><strong><code>name=content</code> (Key and Value)</strong>:
+URL-encodes the value side only, keeping the key intact.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--data-urlencode</span> <span class="st">&quot;search=red shoes&quot;</span> https://httpbin.org/post</span></code></pre></div></li>
+<li><p><strong><code>name@filename</code> (Value from a file)</strong>:
+Loads the contents of a file, URL-encodes it, and assigns it to the
+specified key.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--data-urlencode</span> <span class="st">&quot;bio@biography.txt&quot;</span> https://httpbin.org/post</span></code></pre></div></li>
+<li><p><strong><code>@filename</code> (File content only)</strong>:
+Loads and URL-encodes the entire content of a file without a key.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--data-urlencode</span> <span class="st">&quot;@data.txt&quot;</span> https://httpbin.org/post</span></code></pre></div></li>
+</ol>
+<p>By utilizing these variations of the <code>--data-urlencode</code>
+flag, you can safely transmit complex characters and file data via POST
+requests without worrying about manual percentage-encoding.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/curl'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'light' ? 'github-light' : 'github-dark'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/curl/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/curl/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>
