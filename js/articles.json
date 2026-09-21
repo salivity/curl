@@ -1,0 +1,602 @@
+[
+  [
+    100,
+    "How to Force Curl to Use IPv4 Instead of IPv6",
+    "When making network requests, curl may default to IPv6 if it is enabled on your system and supported by the destination server. However, network configuration issues, firewall rules, or legacy server limitations often require you to restrict your request",
+    false
+  ],
+  [
+    99,
+    "How to Get HTTP Status Code Using Curl Write Out",
+    "When automating web requests or debugging APIs, extracting the HTTP status code is a common requirement. This article provides a quick and direct guide on how to use the curl command's --write-out (or -w) option to isolate and extract the HTTP status cod",
+    false
+  ],
+  [
+    98,
+    "How to Use the curl trace-ascii Flag",
+    "This article explains the purpose of the --trace-ascii flag in the curl command-line tool. You will learn how this option helps in debugging network connections by logging detailed transmission data in a highly readable ASCII format, how it differs from",
+    false
+  ],
+  [
+    97,
+    "How to Enable Verbose Output in Curl",
+    "When troubleshooting network requests or API connections, seeing the exact raw data sent and received is crucial. This article explains how to enable verbose debugging output in a curl command using various command-line flags. You will learn how to inspe",
+    false
+  ],
+  [
+    96,
+    "Curl Retry Options and Handling Transient Errors",
+    "When transferring data over a network using curl, temporary network glitches, rate limits, or brief server outages can cause requests to fail. This article explains how to use curl's built-in retry options to automatically reattempt failed requests, deta",
+    false
+  ],
+  [
+    95,
+    "Limit Curl Download Speed and Bandwidth",
+    "This article explains how to restrict the download speed of the curl command-line tool to prevent it from consuming your entire network bandwidth. You will learn how to use the --limit-rate flag, understand the various speed unit suffixes, and view pract",
+    false
+  ],
+  [
+    94,
+    "How to Set Curl TCP Connection Timeout",
+    "This article explains how to configure a specific connection timeout for the TCP handshake phase in curl using the --connect-timeout option. By limiting this initial phase, you can prevent your command-line requests and scripts from hanging indefinitely",
+    false
+  ],
+  [
+    93,
+    "Set Maximum Time Limit for cURL Operation",
+    "When performing network requests with cURL, preventing commands from hanging indefinitely is crucial for script efficiency and system resource management. This article explains how to set a maximum time limit for an entire cURL operation to complete usin",
+    false
+  ],
+  [
+    92,
+    "How to Use curl with SOCKS5 Proxy",
+    "This article explains how to use the curl command-line utility to route network traffic through a SOCKS5 proxy. It covers the essential command syntax, how to handle DNS resolution through the proxy to prevent leaks, and how to authenticate with username",
+    false
+  ],
+  [
+    91,
+    "How to Use Curl with an HTTP Proxy",
+    "This article explains how to route your curl command-line requests through an HTTP proxy server. It covers the essential command-line flags, environment variables, and authentication methods needed to configure proxy settings for your web requests. The m",
+    false
+  ],
+  [
+    90,
+    "How curl Handles Certificate Revocation Lists",
+    "This article explains how the curl command-line tool handles Certificate Revocation Lists (CRLs) to verify the validity of SSL/TLS certificates. While curl does not automatically download CRLs during a handshake, it possesses native support for enforcing",
+    false
+  ],
+  [
+    89,
+    "Force Curl to Use Specific TLS Version",
+    "This article explains how to force the curl command-line tool to connect to a server using a specific SSL or TLS version. You will learn the exact flags required to restrict your connections to secure protocols like TLS 1.2 or TLS 1.3, which is essential",
+    false
+  ],
+  [
+    88,
+    "How to Specify SSL/TLS Ciphers in Curl",
+    "This article explains how to specify and restrict the SSL/TLS cipher suites used by the curl command-line tool during a secure connection. You will learn the specific command-line flags required for different TLS versions, how to format cipher lists, and",
+    false
+  ],
+  [
+    87,
+    "How to Disable Session ID Caching in curl",
+    "By default, curl and its underlying library, libcurl, cache SSL/TLS session IDs to optimize performance and speed up subsequent connections to the same host. While this is beneficial for reducing handshake latency, there are situations—such as SSL/TLS",
+    false
+  ],
+  [
+    86,
+    "Curl Expired SSL Certificate Error Explained",
+    "When you use curl to connect to an HTTPS website with an expired SSL/TLS certificate, the transfer tool will automatically terminate the connection and refuse to exchange data. This article explains the specific error messages and exit codes curl generat",
+    false
+  ],
+  [
+    85,
+    "How to Check SSL Certificate Details Using Curl",
+    "This article provides a quick guide on how to inspect and verify SSL/TLS certificate details directly from your command line using curl. You will learn the specific commands required to retrieve essential certificate information—such as the issuer, com",
+    false
+  ],
+  [
+    84,
+    "How to Use curl with Client Certificate and Key for mTLS",
+    "Mutual TLS (mTLS) ensures secure, two-way authentication where both the client and the server verify each other's certificates. This article provides a quick, practical guide on how to pass a client certificate and its corresponding private key to the cu",
+    false
+  ],
+  [
+    83,
+    "How to Force TLS 1.2 or Higher in Curl",
+    "This article explains how to use the curl command-line tool to enforce secure connections using TLS 1.2 or higher. You will learn the specific command-line flags required to restrict older, insecure SSL/TLS protocols and ensure your data transfers comply",
+    false
+  ],
+  [
+    82,
+    "Custom CA Certificate Bundle for Curl",
+    "This article provides a quick overview and step-by-step guide on how to configure the curl command-line tool to use a custom Certificate Authority (CA) certificate bundle. You will learn how to specify a custom CA file temporarily for a single request us",
+    false
+  ],
+  [
+    81,
+    "How to Ignore SSL Certificate Errors with cURL",
+    "When working with local development environments, self-signed certificates, or misconfigured servers, cURL will often block HTTPS requests due to SSL validation errors. This article provides a quick and direct guide on how to bypass these security checks",
+    false
+  ],
+  [
+    80,
+    "Force Curl to Resolve Hostname to a Specific IP",
+    "This article explains how to force the curl command-line tool to resolve a specific domain name to a custom IP address without modifying your system's global hosts file. You will learn about the primary method using the --resolve option, alternative appr",
+    false
+  ],
+  [
+    79,
+    "How to Append Data to a URL Using cURL",
+    "This article explains how to append data to a URL using the curl command-line tool. You will learn how to pass data as query parameters for GET requests, how to format data automatically using built-in curl flags, and how to properly handle URL encoding",
+    false
+  ],
+  [
+    78,
+    "Curl Basic Auth Redirect to Different Host",
+    "When using the curl command-line tool, managing sensitive data during HTTP redirects is a critical security consideration. By default, if curl is configured to follow redirects and is sent to a different host, it automatically strips basic authentication",
+    false
+  ],
+  [
+    77,
+    "Extract Final URL After Curl Follows Redirect",
+    "When working with APIs, web scraping, or automated scripts, you often need to find the ultimate destination of a URL that goes through one or more HTTP redirects. This article demonstrates how to configure the curl command-line tool to follow these redir",
+    false
+  ],
+  [
+    76,
+    "How to Handle Curl Infinite Redirect Loops",
+    "When using curl to fetch web resources, encountering an infinite redirect loop can halt automation scripts, waste bandwidth, and cause requests to fail. This article explains what happens when curl gets stuck in a redirect loop, how the tool inherently p",
+    false
+  ],
+  [
+    75,
+    "Pass Query Parameters in cURL Without Manual Encoding",
+    "When sending HTTP requests with curl, manually encoding URL query parameters (such as replacing spaces with %20 or special characters with their hex equivalents) is tedious and prone to formatting errors. This article explains how to cleanly pass query p",
+    false
+  ],
+  [
+    74,
+    "How to Curl URLs with Special Characters and Spaces",
+    "Using curl to send requests to URLs containing spaces, ampersands, question marks, or brackets often results in command-line errors because the shell misinterprets these characters. This article provides a direct guide on how to handle these special char",
+    false
+  ],
+  [
+    73,
+    "How to Keep Same HTTP Method After Curl Redirect",
+    "When using cURL to follow HTTP redirects, the tool's default behavior often converts POST requests into GET requests. This article explains how to use the specific cURL options --post301, --post302, and --post303 to maintain the original HTTP POST method",
+    false
+  ],
+  [
+    72,
+    "Limit Maximum Redirects in curl",
+    "When using curl to fetch data from the web, the tool can be configured to automatically follow HTTP redirects. However, infinite redirect loops or excessive hops can waste system resources and slow down your scripts. This article explains how to quickly",
+    false
+  ],
+  [
+    71,
+    "How to Configure cURL to Follow 3xx Redirects",
+    "When sending HTTP requests using the command-line tool curl, the default behavior is to display the response of the requested URL, even if it returns a 3xx redirect status code. This article explains how to configure curl to automatically follow these re",
+    false
+  ],
+  [
+    70,
+    "Does curl Automatically Manage Cookies",
+    "This article explains how the curl command-line tool handles HTTP cookies during network requests. You will learn whether curl manages cookies automatically by default, how its cookie engine behaves, and the specific flags required to save, load, and mai",
+    false
+  ],
+  [
+    69,
+    "Track Curl Sessions Across Multiple Requests",
+    "Maintaining user sessions across multiple cURL requests requires handling cookies effectively. Because cURL is a stateless command-line tool, it does not automatically store session data between independent executions. This article explains how to use cU",
+    false
+  ],
+  [
+    68,
+    "Correct Cookie File Format for Curl",
+    "This article explains the correct format for a cookie file read by the curl command-line tool. It details the legacy Netscape/Mozilla cookie file format required by curl, breaks down the seven tab-separated fields that make up each line, and provides a p",
+    false
+  ],
+  [
+    67,
+    "How to Ignore or Clear Cookies in Curl",
+    "This article explains how to bypass, clear, or ignore previously saved cookies when executing a new curl command. You will learn the specific command-line flags required to discard active cookie sessions, start a fresh request without loading existing co",
+    false
+  ],
+  [
+    66,
+    "How curl Handles Secure Cookies over HTTP",
+    "This article provides a clear technical overview of how the curl command-line tool and library handle cookies marked with the \"Secure\" attribute when communicating over unencrypted HTTP connections. It explains the security rules curl follows, how it pro",
+    false
+  ],
+  [
+    65,
+    "Discard Curl Session Cookies Keep Persistent Cookies",
+    "This article explains how to configure the curl command-line tool to discard temporary session cookies while preserving persistent cookies. You will learn the specific command-line options required to ignore session-based cookies from a cookie jar during",
+    false
+  ],
+  [
+    64,
+    "How to Send a Cookie in a Curl Command",
+    "Sending a specific cookie key-value pair with a curl command is a fundamental task for web developers and system administrators testing APIs, debugging web sessions, or scraping web data. This article provides a quick, direct guide on how to use the -b (",
+    false
+  ],
+  [
+    63,
+    "What is a curl Cookie Jar and How It Works",
+    "In web automation, API testing, and web scraping, maintaining a continuous session across multiple HTTP requests is essential. This article explains the concept of a \"cookie jar\" in curl, a popular command-line tool for transferring data. You will learn",
+    false
+  ],
+  [
+    62,
+    "How to Read and Send Cookies with Curl",
+    "Using curl to manage cookies is a fundamental skill for web scraping, API testing, and automating web interactions. This article provides a direct, step-by-step guide on how to configure curl to read existing cookies from a local text file, send them wit",
+    false
+  ],
+  [
+    61,
+    "Save cURL Cookies to Local File",
+    "This article explains how to use the curl command-line tool to capture and save HTTP cookies sent by a web server into a local text file. You will learn the specific command-line options required to write cookies to a disk, how to read those saved cookie",
+    false
+  ],
+  [
+    60,
+    "Specify SSH Identity File for Curl",
+    "This article explains how to specify a private key (identity file) for public key authentication when using the curl command-line tool. You will learn the exact flags required to securely connect to SFTP or SCP servers using your SSH keys, along with pra",
+    false
+  ],
+  [
+    59,
+    "Use Curl with Kerberos Negotiate Authentication",
+    "This article explains how to use the curl command-line tool to authenticate against a web server using the Kerberos and SPNEGO (Negotiate) protocols. You will learn how to acquire a Kerberos ticket, construct the correct curl command, and use the necessa",
+    false
+  ],
+  [
+    58,
+    "How to Use Curl with SFTP and Private Key",
+    "This article explains how to authenticate with an SFTP server using the curl command-line tool and an SSH private key. You will learn the exact command syntax required to securely connect, how to handle public key dependencies, and how to manage passphra",
+    false
+  ],
+  [
+    57,
+    "Pass API Key in Query String with cURL",
+    "This guide demonstrates how to pass an API key as a query parameter using the cURL command-line tool. You will learn the basic syntax for appending credentials to a URL, how to handle multiple query parameters, and important security considerations assoc",
+    false
+  ],
+  [
+    56,
+    "How to Authenticate with NTLM Using Curl",
+    "Authenticating with an NTLM-secured server using curl is a straightforward process when using the correct command-line flags. This article provides a quick, step-by-step guide on how to configure your curl requests to successfully bypass NTLM authenticat",
+    false
+  ],
+  [
+    55,
+    "How to Use curl with .netrc for Auto Authentication",
+    "This article explains how the curl command-line tool utilizes the .netrc file to automate user authentication. You will learn the purpose of the .netrc file, how to format it with your login credentials, and the specific curl flags required to securely a",
+    false
+  ],
+  [
+    54,
+    "Curl Option for Digest Authentication",
+    "This article explains the specific command-line option required to use Digest Access Authentication with curl. It provides a straightforward guide on how to implement the --digest flag, combine it with user credentials, and execute secure HTTP requests.",
+    false
+  ],
+  [
+    53,
+    "How to Use cURL to Send Bearer Token",
+    "This article provides a quick and straightforward guide on how to use the cURL command-line tool to send an OAuth 2.0 Bearer token in an HTTP request. You will learn the exact syntax required to include the authorization header and see practical examples",
+    false
+  ],
+  [
+    52,
+    "Pass Password to curl Without Command History",
+    "When using curl for API calls or web requests that require authentication, passing passwords directly in the command line exposes them to your shell history and the system's process list. This article demonstrates the most secure methods to pass password",
+    false
+  ],
+  [
+    51,
+    "How to Provide Basic Auth Credentials in Curl",
+    "Sending Basic Authentication credentials with curl is a fundamental task for interacting with protected APIs and web servers. This article provides a quick, direct guide on how to pass usernames and passwords using curl's built-in options, including the",
+    false
+  ],
+  [
+    50,
+    "How curl handles chunked transfer encoding uploads",
+    "This article explains how the curl command-line tool manages chunked transfer encoding during data uploads. It covers when curl automatically applies chunked encoding, how the underlying data transfer mechanism works, and how to force or disable this beh",
+    false
+  ],
+  [
+    49,
+    "How to Upload a File to FTP Using cURL",
+    "This article provides a quick and straightforward guide on how to use the cURL command-line tool to upload files to an FTP server. You will learn the basic syntax for standard FTP uploads, how to handle secure FTPS transfers, and how to include user auth",
+    false
+  ],
+  [
+    48,
+    "Curl POST application/x-www-form-urlencoded Guide",
+    "This article provides a quick guide on how to use the curl command-line tool to send form data using the application/x-www-form-urlencoded content type. You will learn the correct syntax, the default behaviors of curl, and how to handle special character",
+    false
+  ],
+  [
+    47,
+    "How to Prevent Curl from Stripping Newlines",
+    "This article explains how to prevent the curl command-line tool from stripping newlines and carriage returns when reading data from a file. By default, curl removes these line breaks when using standard data flags, but you can preserve the original forma",
+    false
+  ],
+  [
+    46,
+    "How to Send Binary Data with Curl",
+    "Sending binary data, such as images, compressed archives, or PDF files, is a frequent requirement when interacting with REST APIs using curl. This article explains how to transmit raw binary payloads using the --data-binary option, ensuring that the data",
+    false
+  ],
+  [
+    45,
+    "How to URL Encode POST Data Automatically with cURL",
+    "Sending POST requests with URL-encoded data is a common task when interacting with web APIs. This article explains how to use the curl command-line tool to automatically URL-encode your POST payload using the --data-urlencode flag, ensuring your data is",
+    false
+  ],
+  [
+    44,
+    "Curl POST Request Body From Local File",
+    "This article explains how to use the curl command-line tool to send a POST request using data stored in a local file as the request body. You will learn the correct syntax for importing text, JSON, and binary files directly into your API calls, along wit",
+    false
+  ],
+  [
+    43,
+    "Upload File Using Multipart Form Data in Curl",
+    "This article provides a quick, practical guide on how to upload files to a server using the curl command-line tool. You will learn the exact syntax for sending local files using multipart/form-data POST requests, including how to handle multiple files, c",
+    false
+  ],
+  [
+    42,
+    "Difference Between curl -d and -F Flags",
+    "When using curl to send POST requests, the choice between the -d (--data) and -F (--form) flags determines how your data is formatted and transmitted. This article provides a clear comparison of these two flags, explaining their default Content-Type head",
+    false
+  ],
+  [
+    41,
+    "Send JSON Data in POST Request Using Curl",
+    "Sending JSON data in the body of a POST request is a fundamental task when interacting with modern web APIs. This guide demonstrates how to use the curl command-line tool to transmit JSON payloads, outlining the essential flags, headers, and syntax requi",
+    false
+  ],
+  [
+    40,
+    "How to Send Origin Header with curl",
+    "This article explains how to send a custom Origin HTTP header using the curl command-line tool. You will learn the exact command-line flags required to set this header, which is essential for testing Cross-Origin Resource Sharing (CORS) configurations an",
+    false
+  ],
+  [
+    39,
+    "How to Set the Referer Header in Curl",
+    "This article explains how the curl command-line tool handles the HTTP Referer header. It covers curl's default behavior, demonstrates how to manually set a custom referrer using specific command-line flags, and explains how to configure curl to automatic",
+    false
+  ],
+  [
+    38,
+    "Curl Option to Write Headers to a Text File",
+    "This article explains how to use the curl command-line tool to save received HTTP response headers directly to a specific text file. It identifies the exact command-line option required and provides practical examples of how to implement it in your termi",
+    false
+  ],
+  [
+    37,
+    "How to Include Response Headers in Curl Output",
+    "When debugging web requests or testing APIs, you often need to view the HTTP response headers alongside the actual response body. This article explains how to instruct the curl command-line tool to include response headers in its standard output using th",
+    false
+  ],
+  [
+    36,
+    "Send Empty Header Value Using cURL",
+    "When testing or interacting with web APIs, you may occasionally need to send a custom HTTP header that contains no value. This article provides a quick, direct guide on how to send an empty header value using the cURL command-line tool, explaining the co",
+    false
+  ],
+  [
+    35,
+    "Remove Internally Generated Headers in Curl",
+    "When making HTTP requests using the curl command-line tool or its associated libraries, the utility automatically generates several default headers such as User-Agent, Accept, and Host. This article provides a quick and direct guide on how to disable, re",
+    false
+  ],
+  [
+    34,
+    "How to Change the Default curl User-Agent",
+    "This article provides a quick guide on how to modify the default User-Agent string sent by the curl command-line tool. You will learn how to temporarily change the User-Agent for individual requests using command-line flags, as well as how to configure a",
+    false
+  ],
+  [
+    33,
+    "How to Send Multiple Headers in a Curl Request",
+    "When making HTTP requests using the command-line tool curl, you often need to pass multiple distinct metadata headers to authorize or configure the request properly. This article provides a direct guide on how to send multiple headers in a single curl co",
+    false
+  ],
+  [
+    32,
+    "How to Show Only HTTP Headers with cURL",
+    "When debugging web applications or analyzing server behavior, you often need to inspect the HTTP response headers without downloading the entire response body. This article demonstrates how to use the curl command-line tool to retrieve and display only t",
+    false
+  ],
+  [
+    31,
+    "How to Send Custom HTTP Headers With curl",
+    "Sending custom HTTP headers is a fundamental task when testing APIs or interacting with web services using the command-line tool curl. This article provides a quick, direct guide on how to use the -H (or --header) option in curl to include custom headers",
+    false
+  ],
+  [
+    30,
+    "How to Use cURL to Interact with a REST API",
+    "This guide demonstrates how to use cURL, a powerful command-line tool, to interact with REST APIs. You will learn how to perform essential HTTP methods—including GET, POST, PUT, and DELETE—as well as how to send custom headers, handle authentication,",
+    false
+  ],
+  [
+    29,
+    "How Curl Handles POST to GET Redirects",
+    "When using the curl command-line tool to send an HTTP POST request, encountering a redirect (3xx status code) can alter how the subsequent request is made. This article explains how curl handles the conversion of a POST request to a GET request during a",
+    false
+  ],
+  [
+    28,
+    "How to Send Custom HTTP Methods with cURL",
+    "Yes, cURL can be used to send custom HTTP methods. While cURL defaults to standard methods like GET, POST, and PUT, you can easily initiate requests using any custom or WebDAV HTTP verb—such as PURGE, MERGE, or COPY—by utilizing the -X or --request c",
+    false
+  ],
+  [
+    27,
+    "How to Send an HTTP OPTIONS Request Using curl",
+    "This article provides a quick, practical guide on how to send an HTTP OPTIONS request using the curl command-line tool. You will learn the exact syntax to perform the request and how to retrieve the server's response headers to identify supported HTTP me",
+    false
+  ],
+  [
+    26,
+    "What is the Default HTTP Method for Curl?",
+    "When using the command-line tool curl to interact with web servers, understanding how it transmits requests is crucial for debugging and API development. This article explains the default HTTP method that curl uses when no method is explicitly defined, h",
+    false
+  ],
+  [
+    25,
+    "How to Force Curl to Send HEAD Request",
+    "This article explains how to use the curl command-line tool to send an HTTP HEAD request to retrieve only the response headers from a web server. You will learn the primary commands to fetch headers, the difference between the available options, and how",
+    false
+  ],
+  [
+    24,
+    "Send HTTP PATCH Request with cURL",
+    "This article provides a quick guide on how to send an HTTP PATCH request using the curl command-line tool. You will learn the exact syntax required to perform partial updates on a resource, including how to set the request method, send JSON data payloads",
+    false
+  ],
+  [
+    23,
+    "How to Send an HTTP DELETE Request with Curl",
+    "This guide provides a straightforward explanation of how to execute an HTTP DELETE request using the curl command-line tool. You will learn the basic command syntax, how to pass custom headers, and how to include a request body when interacting with REST",
+    false
+  ],
+  [
+    22,
+    "How to Send an HTTP PUT Request Using Curl",
+    "This article provides a quick and clear guide on how to send an HTTP PUT request using the curl command-line tool. You will learn the correct command syntax, how to send data payloads in different formats, and how to upload files directly to a server usi",
+    false
+  ],
+  [
+    21,
+    "How to Specify HTTP POST Method in cURL",
+    "Using curl to send HTTP POST requests is a fundamental skill for testing APIs and interacting with web services. This guide provides a direct, step-by-step overview of how to specify the POST method using curl, demonstrating how to send empty POST reques",
+    false
+  ],
+  [
+    20,
+    "Curl Command to Download File from FTP Server",
+    "Using the curl command-line tool is one of the most efficient ways to transfer data to or from a remote server. This article provides a quick and direct guide on how to use curl to download a file from an FTP server, covering basic downloads, handling au",
+    false
+  ],
+  [
+    19,
+    "How to Configure Curl to Output to Stdout",
+    "This article explains how to configure the curl command-line tool to write its retrieved data directly to standard output (stdout). While curl prints to stdout by default, you will learn how to explicitly force this behavior using command-line flags, sup",
+    false
+  ],
+  [
+    18,
+    "How to Silence cURL Output and Errors",
+    "When running cron jobs, shell scripts, or automated tasks, you often need to execute a network request without cluttering the terminal or log files. This article explains how to completely suppress all output from the curl command, including progress met",
+    false
+  ],
+  [
+    17,
+    "How to Show a Progress Bar in Curl",
+    "This article explains how to change the default, text-heavy progress meter in curl to a clean, visual progress bar. You will learn the specific command-line flags required to enable this visual bar, how to apply it during file downloads, and how to confi",
+    false
+  ],
+  [
+    16,
+    "How to Run curl in Silent Mode",
+    "When transferring data with the curl command-line tool, the terminal by default displays a progress meter and various status updates. This article provides a quick guide on how to use the silent mode option in curl to suppress this default progress and e",
+    false
+  ],
+  [
+    15,
+    "How to Resume an Interrupted Download Using Curl",
+    "This article provides a quick guide on how to resume a failed or interrupted file download using the curl command-line tool. You will learn the specific command-line flags required to restart a download from where it left off, saving both time and bandwi",
+    false
+  ],
+  [
+    14,
+    "Curl URL Globbing for Downloading File Sequences",
+    "URL globbing in curl is a powerful feature that allows users to download multiple files matching a specific sequence or pattern using a single command. By utilizing brackets and braces, curl can automatically iterate through numerical ranges, alphabetica",
+    false
+  ],
+  [
+    13,
+    "Curl Download Multiple Files in One Command",
+    "Downloading multiple files individually can be tedious and time-consuming. Fortunately, the curl command-line tool provides several efficient ways to download multiple files simultaneously or sequentially using a single command. This article covers the m",
+    false
+  ],
+  [
+    12,
+    "How to Specify a Custom Output Filename in cURL",
+    "When downloading files using the command-line utility cURL, saving the file with a specific name rather than its default remote name is a common task. This article explains which cURL flags are used to define a custom output filename, provides practical",
+    false
+  ],
+  [
+    11,
+    "Curl Download File with Original Filename",
+    "This article provides a quick and practical guide on how to use the curl command-line tool to download files from the web and save them using their original filenames. You will learn about the key flags, such as -O, -L, and -J, which allow you to automat",
+    false
+  ],
+  [
+    10,
+    "How to Make a GET Request with Curl",
+    "This article provides a straightforward guide on how to perform a simple HTTP GET request using curl, a popular command-line tool for transferring data over various network protocols. You will learn the basic command syntax, how to save the output to a f",
+    false
+  ],
+  [
+    9,
+    "Library That Powers the curl Command Line Tool",
+    "The curl command-line tool is a staple in modern computing, used globally for transferring data with URLs. This article explores the core library that powers curl, detailing its capabilities, its relationship with the command-line interface, and how it e",
+    false
+  ],
+  [
+    8,
+    "How to Access the curl Built-In Manual",
+    "This article provides a quick guide on how to access the built-in manual and help documentation for the curl command-line tool. You will learn the specific commands used to view the comprehensive offline manual, find quick help options, and navigate the",
+    false
+  ],
+  [
+    7,
+    "What Does the Name curl Stand For?",
+    "In the world of software development and networking, curl is one of the most widely used command-line tools. This article explains the meaning behind the name \"curl,\" its origins, and how this powerful tool got its name from its primary function of inter",
+    false
+  ],
+  [
+    6,
+    "Who is the Original Author and Maintainer of curl?",
+    "This article identifies the creator and primary maintainer of curl, the ubiquitous command-line tool and library used for transferring data across various network protocols. It details the origins of the project, the developer behind its creation, and hi",
+    false
+  ],
+  [
+    5,
+    "How to Check Your Curl Version",
+    "Knowing which version of curl is installed on your system is essential for troubleshooting network requests, ensuring security compliance, and verifying supported protocols. This quick guide shows you how to easily find your curl version on Linux, macOS,",
+    false
+  ],
+  [
+    4,
+    "Operating Systems That Natively Support Curl",
+    "This article provides a comprehensive overview of the operating systems that include the curl command-line tool by default. While historically developers had to install this versatile data-transfer utility manually, modern operating systems now widely in",
+    false
+  ],
+  [
+    3,
+    "Difference Between curl and wget",
+    "Both curl and wget are popular command-line tools used for downloading data from the internet, but they serve different primary use cases. This article explores the key differences between them, highlighting when to use curl for transferring data with va",
+    false
+  ],
+  [
+    2,
+    "What Protocols Does Curl Support?",
+    "The command-line tool curl (Client URL) is a powerful utility used globally for transferring data to and from servers. This article provides a direct, comprehensive list of the network protocols currently supported by curl to help developers and system a",
+    false
+  ],
+  [
+    1,
+    "What Is the curl Command Line Tool Used For?",
+    "This article explains the primary purpose of the curl command line tool, detailing how it transfers data across various network protocols. We will explore its core functionality, common use cases like API interaction and file downloads, and why it remain",
+    false
+  ]
+]
